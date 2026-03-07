@@ -3,10 +3,13 @@
 namespace Alura\Mvc\Controller;
 
 use Alura\Mvc\Entity\Video;
+use Alura\Mvc\Helper\HtmlRendererTrait;
 use Alura\Mvc\Repository\VideoRepository;
 
 class VideoFormController implements Controller
 {
+    use HtmlRendererTrait;
+
     public function __construct(private VideoRepository $videoRepository)
     {
     }
@@ -21,6 +24,12 @@ class VideoFormController implements Controller
         if ($id !== false && $id !== null) {
             $video = $this->videoRepository->find($id);
         }
-        require_once __DIR__ . "/../../views/video-form.php";
+
+        echo $this->renderTemplate(
+            'video-form', 
+            [
+                'video' => $video
+            ]
+            );
     }
 }

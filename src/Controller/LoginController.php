@@ -3,11 +3,13 @@
 namespace Alura\Mvc\Controller;
 
 use Alura\Mvc\Controller\Controller;
-use Alura\Mvc\Entity\User;
+use Alura\Mvc\Helper\FlashMessageTrait;
 use Alura\Mvc\Repository\UserRepository;
 
 class LoginController implements Controller
 {
+	use FlashMessageTrait;
+
 	public function __construct(private UserRepository $userRepository)
 	{
 	}
@@ -18,10 +20,11 @@ class LoginController implements Controller
 
 		$user = $this->userRepository->findByEmail($email);
 
-		if(!$user) {
-			header("Location: /login?sucesso=0");
-			exit();
-		}
+		// if(!$user) {
+		// 	header("Location: /login");
+		// 	$_SESSION['error_message'] = "Usuário ou senha inválidos.";
+		// 	exit();
+		// }
 
 		if (password_verify($password, $user->hash ?? '')) {
 
@@ -31,9 +34,10 @@ class LoginController implements Controller
 			}
 
 			$_SESSION['logado'] = true;
-			header("Location: /?sucesso=1");
+			header("Location: /");
 		} else {
-			header("Location: /login?sucesso=0");
+			$this->addErrorMessage("Usuário ou senha inválidos");
+			header("Location: /login");
 		}
 	}
 }

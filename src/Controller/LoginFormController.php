@@ -2,8 +2,12 @@
 
 namespace Alura\Mvc\Controller;
 
+use Alura\Mvc\Helper\HtmlRendererTrait;
+
 class LoginFormController implements Controller
 {
+	use HtmlRendererTrait;
+
 	public function __construct()
 	{
 	}
@@ -14,6 +18,7 @@ class LoginFormController implements Controller
 			header("Location: /");
 			return;
 		}
-		require_once __DIR__ . "/../../views/login-form.php";
+		
+		echo $this->renderTemplate('login-form');
 	}
 }

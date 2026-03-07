@@ -2,10 +2,13 @@
 
 namespace Alura\Mvc\Controller;
 
+use Alura\Mvc\Helper\FlashMessageTrait;
 use Alura\Mvc\Repository\VideoRepository;
 
 class DeleteVideoController implements Controller
 {
+    use FlashMessageTrait;
+
     public function __construct(private VideoRepository $videoRepository)
     {
     }
@@ -18,9 +21,12 @@ class DeleteVideoController implements Controller
         $success = $this->videoRepository->remove($id);
 
         if($success) {
-            header("Location: /?sucesso=1");
+            header("Location: /");
+            exit();
         } else {
-            header("Location: /?sucesso=0");
+            $this->addErrorMessage("Erro ao remover vídeo");
+            header("Location: /");
+            exit();
         }
     }
 }
